@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>zoo-type-and-search (demo)</title>
+    
+    <!-- **************** -->
+    <!-- Class version -->
+    <!-- **************** -->
+    <script src="../lib/class/zootypeandsearch.js"></script>
+    
+    <!-- **************** -->
+    <!-- Module version -->
+    <!-- **************** -->
+    <!-- <script src="../lib/module/zootypeandsearch.js"></script> -->
+
+    <style>
+        /* ======================= */
+        /* Style overrides example */
+        /* ======================= */
+        .zoo-type-and-search-list.exampleA {
+            border-color: black;
+            border-width: 5px;
+        }
+        .zoo-type-and-search-list__item.exampleA {
+            font-size: 22px;
+        }
+        .zoo-type-and-search-list__item.exampleA:hover,
+        .zoo-type-and-search-list__item.exampleA.selected {
+            background-color: tomato;
+            color: white;  
+        }
+
+        .zoo-type-and-search-list__item.exampleC {
+            color: magenta;
+        }
+    </style>
+</head>
+
+<body>
+    <header style="display: flex; justify-content: center;">
+        <h1>zoo-type-and-search (demo)</h1>
+    </header>
+
+    <div style="display: flex; justify-content: center; margin-top: 20px; position: relative;">
+        <div style="display: flex; margin-top: 30px; margin-left: 10px;">
+            <label style="margin: 0 5px">A:</label>
+            <input id="exampleA" placeholder="w/style override">
+            
+            <label style="margin: 0 5px">B:</label>
+            <input id="exampleB" placeholder="w/debounce override">
+            
+            <label style="margin: 0 5px">C:</label>
+            <input id="exampleC"
+                placeholder="w/defaults, using attrs"
+                ztas-keyup="onKeyupHandler"
+                ztas-select="onSelectHandlerC"
+                ztas-debounce="10"><!-- ztas-debounce is optional (defaults to 250) -->
+        </div>
+    </div>
+
+    <section style="display: flex; flex-direction: column; align-items: center;">
+        <h2>Result (A)</h2>
+        <span id="resultA" style="display: flex;"></span>
+    </section>
+
+    <section style="display: flex; flex-direction: column; align-items: center;">
+        <h2>Result (B)</h2>
+        <span id="resultB" style="display: flex;"></span>
+    </section>
+
+    <section style="display: flex; flex-direction: column; align-items: center;">
+        <h2>Result (C)</h2>
+        <span id="resultC" style="display: flex;"></span>
+    </section>
+
+    <script>
+        // Mock database
+        const db = {
+            items: [{
+                id: 12,
+                name: 'obez'
+            }, {
+                id: 13,
+                name: 'obezyanka',
+                translation: 'monkey'
+            }, {
+                id: 14,
+                name: 'obezutka'
+            }, {
+                id: 15,
+                name: 'utka',
+                translation: 'duck'
+            }, {
+                id: 16,
+                name: 'utochka'
+            }, {
+                id: 17,
+                name: 'utochkachok'
+            }, {
+                id: 18,
+                name: 'begemot',
+                translation: 'hippopotamus'
+            }, {
+                id: 19,
+                name: 'begemotik'
+            }, {
+                id: 20,
+                name: 'homyak',
+                translation: 'hamster'
+            }, {
+                id: 21,
+                name: 'homyachok'
+            }, {
+                id: 22,
+                name: 'slon',
+                translation: 'elephant'
+            }, {
+                id: 23,
+                name: 'slonyonok'
+            }, {
+                id: 24,
+                name: 'korova',
+                translation: 'cow'
+            }]
+        };
+
+        // =====================================================================================
+        // 1. Create a method for querying a data set of results based on user input (text) 
+        // NOTE: This method *MUST* return a Promise
+        // NOTE: The Promise *MUST* resolve either an empty array or an array of objects
+        // with AT LEAST a "name" property, as this will be used to set the innerHTML of
+        // the list item (result)
+        // ======================================================================================
+        const onKeyupHandler = (val) => {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    const results = db.items.filter((item) => item.name.search(new RegExp(encodeURIComponent(val), 'i')) === 0);
+                    return resolve(results);
+                    // return reject({error: 'NO_RESULTS'});
+                }, 200);
+            });
+        };
+        // ================================================================================
+        // 2. Create a method for carrying out actions when a user selects an item from
+        // the list of results
+        // NOTE: the value of "result" will be the selected object from the results array
+        // ================================================================================
+        const onSelectHandlerA = (result) => {
+            document.querySelector('#resultA').innerHTML = JSON.stringify(result);
+        };
+        const onSelectHandlerB = (result) => {
+            document.querySelector('#resultB').innerHTML = JSON.stringify(result);
+        }
+        const onSelectHandlerC = (result) => {
+            document.querySelector('#resultC').innerHTML = JSON.stringify(result);
+        }
+
+        // =======================================================
+        // 3A. Register handlers using zootypeandsearch.create()
+        // =======================================================
+        const ztasA = zootypeandsearch.create({
+            onKeyupHandler: onKeyupHandler,
+            onSelectHandler: onSelectHandlerA,
+            el: '#exampleA',
+            debounce: 250, // (optional) default is 250,
+        });
+        const ztasB = zootypeandsearch.create({
+            onKeyupHandler: onKeyupHandler,
+            onSelectHandler: onSelectHandlerB,
+            el: '#exampleB',
+            debounce: 1000, // (optional) default is 250
+        });
+        // ===============================================================
+        // 3B. OR Register handlers on the attributes of the input using
+        // ztas-keyup, ztas-select and optional ztas-debug
+        // ===============================================================
+
+        // Voor debug...
+        window.ztasA = ztasA;
+        window.ztasB = ztasB;
+
+        console.log('ztasA', ztasA, 'ztasB', ztasB, 'db', db);
+    </script>
+
+</body>
+
+</html>
