@@ -2,17 +2,20 @@
 <html lang="en">
 
 <head>
+    <!-- meta -->
     <meta charset="utf-8">
-    <title>zoo-type-and-search (demo)</title>
+    <meta name="author" content="zooduck">
+    <!-- title -->
+    <title>zoo-type-and-search</title>
     
     <!-- **************** -->
     <!-- Class version -->
     <!-- **************** -->
     <script src="../lib/class/zootypeandsearch.js"></script>
     
-    <!-- **************** -->
-    <!-- Module version -->
-    <!-- **************** -->
+    <!-- ********************************************************************** -->
+    <!-- Module version (should be identical to Class version in functionality) -->
+    <!-- *********************************************************************** -->
     <!-- <script src="../lib/module/zootypeandsearch.js"></script> -->
 
     <style>
@@ -20,7 +23,7 @@
         /* Style overrides example */
         /* ======================= */
         .zoo-type-and-search-list.exampleA {
-            border-color: black;
+            border-color: tomato;
             border-width: 5px;
         }
         .zoo-type-and-search-list__item.exampleA {
@@ -31,45 +34,174 @@
             background-color: tomato;
             color: white;  
         }
+        /* ============ */
+        /* Main Content */
+        /* ============ */
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0 20px;
+            font: normal 16px 'Source Sans Pro', 'Lucida Grande', sans-serif;
+        }
+
+        h1, h2, h3, h4 {
+            text-align: center;
+            color: #222222;
+        }
+
+        .title-header {
+            display: flex;
+            justify-content: center;
+        }
+
+        .title-header__content {
+            text-align: center;
+        }
+
+        .examples-container {
+            display: grid;
+            grid-template-columns: repeat(3, auto);
+            grid-gap: 10px;
+            gap: 10px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .examples-container h2 {
+            background-color: floralwhite;
+            padding: 5px;
+            font-weight: normal;
+        }
+
+        @media (max-width: 800px) {
+            .examples-container {
+                grid-template-columns: auto;
+                justify-content: center;
+            }
+        }
+
+        .examples-container__example {
+            background-color: antiquewhite;
+            padding: 10px;
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .input-container label {
+            background-color: floralwhite;
+            padding: 10px;
+            margin-right: 5px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        th {
+            background-color: #49c849;
+            padding: 10px;
+            color: #ffffff;
+            text-align: left;
+            border: solid 1px #49c849;
+        }
+        td {
+            border: solid 1px gainsboro;
+            padding:  5px;
+        }
+        tr {
+            background-color: #ffffff;
+        }
+        tr:nth-of-type(odd) {
+            background-color: #eeeeee;
+        }
+
     </style>
 </head>
 
 <body>
-    <header style="display: flex; justify-content: center;">
-        <h1>zoo-type-and-search (demo)</h1>
+    <!-- header -->
+    <header class="title-header">
+        <h1 class="title-header__content">zoo-type-and-search</h1>
     </header>
-
-    <div style="display: flex; justify-content: center; margin-top: 20px; position: relative;">
-        <div style="display: flex; margin-top: 30px; margin-left: 10px;">
-            <label style="margin: 0 5px">A</label>
-            <input id="exampleA" placeholder="w/style override">
-            
-            <label style="margin: 0 5px">B</label>
-            <input id="exampleB" placeholder="w/debounce override">
-            
-            <label style="margin: 0 5px">C</label>
-            <input id="exampleC"
-                placeholder="using attrs only"
-                ztas-keyup="onKeyupHandler"
-                ztas-select="onSelectHandlerC"
-                ztas-debounce="10"><!-- ztas-debounce is optional (defaults to 250) -->
+    <!-- examples -->
+    <div class="examples-container">
+        <div class="examples-container__example">
+            <h2>Custom Styles</h2>
+            <div class="input-container">
+                <label>A</label>
+                <input id="exampleA" placeholder="Search...">
+            </div>
+            <div>
+                <table id="resultA">
+                    <tr>
+                        <th>Id</th><th>Russian</th><th>English</th>
+                    </tr>
+                    <tr>
+                        <td class="id">&nbsp;</td>
+                        <td class="name">&nbsp;</td>
+                        <td class="translation">&nbsp;</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="examples-container__example">
+            <h2>Custom Debounce</h2>
+            <div class="input-container">
+                <label>B</label>
+                <input id="exampleB" placeholder="Search...">
+            </div>
+            <div>
+                <table id="resultB">
+                    <tr>
+                        <th>Id</th><th>Russian</th><th>English</th>
+                    </tr>
+                    <tr>
+                        <td class="id">&nbsp;</td>
+                        <td class="name">&nbsp;</td>
+                        <td class="translation">&nbsp;</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="examples-container__example">
+            <h2>Using Attributes</h2>
+            <div class="input-container">
+                <label>C</label>
+                <input id="exampleC" placeholder="Search..."
+                    ztas-keyup="onKeyupHandler"
+                    ztas-select="onSelectHandlerC"
+                    ztas-debounce="10" />
+            </div>
+            <div>
+                <table id="resultC">
+                    <tr>
+                        <th>Id</th><th>Russian</th><th>English</th>
+                    </tr>
+                    <tr>
+                        <td class="id">&nbsp;</td>
+                        <td class="name">&nbsp;</td>
+                        <td class="translation">&nbsp;</td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
-
-    <section style="display: flex; flex-direction: column; align-items: center;">
-        <h2>Result (A)</h2>
-        <span id="resultA" style="display: flex;"></span>
-    </section>
-
-    <section style="display: flex; flex-direction: column; align-items: center;">
-        <h2>Result (B)</h2>
-        <span id="resultB" style="display: flex;"></span>
-    </section>
-
-    <section style="display: flex; flex-direction: column; align-items: center;">
-        <h2>Result (C)</h2>
-        <span id="resultC" style="display: flex;"></span>
-    </section>
+    <!-- database -->
+    <h1>Database</h1>
+    <table class="zoo-db-table">
+        <tr>
+            <th>Id</th>
+            <th>Russian</th>
+            <th>English</th>
+        </tr>
+    </table>
 
     <script>
         // Mock database
@@ -122,6 +254,19 @@
             }]
         };
 
+        const zooDatabaseTable = document.querySelector('.zoo-db-table');
+        db.items.forEach((animal) => {
+            const { id, name, translation } = animal;
+            const tdEls = [id, name, translation].map((prop) => {
+                const td = document.createElement('td');
+                td.innerHTML = prop || 'n/a';
+                return td;
+            });
+            const tr = document.createElement('tr');
+            tdEls.forEach(el => tr.appendChild(el));
+            zooDatabaseTable.querySelector('tbody').appendChild(tr);
+        });
+
         // =====================================================================================
         // 1. Create a method for querying a data set of results based on user input (text) 
         // NOTE: This method *MUST* return a Promise
@@ -144,13 +289,23 @@
         // NOTE: the value of "result" will be the selected object from the results array
         // ================================================================================
         const onSelectHandlerA = (result) => {
-            document.querySelector('#resultA').innerHTML = JSON.stringify(result);
+            const { id, name, translation } = result;
+            document.querySelector('#resultA').querySelector('.id').innerHTML = id;
+            document.querySelector('#resultA').querySelector('.name').innerHTML = name;
+            document.querySelector('#resultA').querySelector('.translation').innerHTML = translation || 'n/a';
+
         };
         const onSelectHandlerB = (result) => {
-            document.querySelector('#resultB').innerHTML = JSON.stringify(result);
+            const { id, name, translation } = result;
+            document.querySelector('#resultB').querySelector('.id').innerHTML = id;
+            document.querySelector('#resultB').querySelector('.name').innerHTML = name;
+            document.querySelector('#resultB').querySelector('.translation').innerHTML = translation || 'n/a';
         }
         const onSelectHandlerC = (result) => {
-            document.querySelector('#resultC').innerHTML = JSON.stringify(result);
+            const { id, name, translation } = result;
+            document.querySelector('#resultC').querySelector('.id').innerHTML = id;
+            document.querySelector('#resultC').querySelector('.name').innerHTML = name;
+            document.querySelector('#resultC').querySelector('.translation').innerHTML = translation || 'n/a';
         }
 
         // =======================================================
@@ -170,7 +325,7 @@
         });
         // ===============================================================
         // 3B. OR Register handlers on the attributes of the input using
-        // ztas-keyup, ztas-select and optional ztas-debug
+        // ztas-keyup, ztas-select and optional ztas-debounce
         // ===============================================================
 
         // Voor debug...
